@@ -172,6 +172,10 @@ public final class Templates {
                     FileHelper.readResourceFile("feedbackQuestionRubricEditFormWeightFragment.html");
             public static final String RUBRIC_EDIT_FORM_BODY_FRAGMENT =
                     FileHelper.readResourceFile("feedbackQuestionRubricEditFormBodyFragment.html");
+            public static final String RUBRIC_EDIT_FORM_BODY_WEIGHT_FRAGMENT =
+                    FileHelper.readResourceFile("feedbackQuestionRubricEditFormBodyWeightFragment.html");
+            public static final String RUBRIC_EDIT_FORM_BODY_WEIGHT_ROW =
+                    FileHelper.readResourceFile("feedbackQuestionRubrikEditFormWeightRow.html");
             public static final String RUBRIC_EDIT_FORM_BODY =
                     FileHelper.readResourceFile("feedbackQuestionRubricEditFormBody.html");
             public static final String RUBRIC_EDIT_FORM_TABLE_OPTIONS =
@@ -450,6 +454,7 @@ public final class Templates {
             public static final String CURRENT_ROWS = "${currRows}";
             public static final String CURRENT_COLS = "${currCols}";
             public static final String RUBRIC_ROW_BODY_FRAGMENTS = "${rubricRowBodyFragments}";
+            public static final String RUBRIC_ROW_BODY_WEIGHT_FRAGMENTS = "${rubricRowBodyWeightFragments}";
             public static final String TABLE_HEADER_ROW_FRAGMENT_HTML = "${tableHeaderRowFragmentHtml}";
             public static final String TABLE_BODY_HTML = "${tableBodyHtml}";
             public static final String SUB_QUESTION = "${subQuestion}";

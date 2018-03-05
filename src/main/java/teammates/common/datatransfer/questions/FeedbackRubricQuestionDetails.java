@@ -404,10 +404,14 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
         StringBuilder tableBodyHtml = new StringBuilder();
 
         String tableBodyFragmentTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY_FRAGMENT;
+        String tableBodyWeightFragmentTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY_WEIGHT_FRAGMENT;
+        String tableBodyWeightRowTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY_WEIGHT_ROW;
         String tableBodyTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY;
 
         for (int j = 0; j < numOfRubricSubQuestions; j++) {
             StringBuilder tableBodyFragmentHtml = new StringBuilder();
+            StringBuilder tableBodyWeightFragmentHtml = new StringBuilder();
+
             for (int i = 0; i < numOfRubricChoices; i++) {
                 String tableBodyCell =
                         Templates.populateTemplate(tableBodyFragmentTemplate,
@@ -417,6 +421,14 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                                 Slots.DESCRIPTION, SanitizationHelper.sanitizeForHtml(this.getDescription(j, i)),
                                 Slots.RUBRIC_PARAM_DESCRIPTION, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_DESCRIPTION);
                 tableBodyFragmentHtml.append(tableBodyCell).append(Const.EOL);
+
+                String tableBodyWeightCell =
+                        Templates.populateTemplate(tableBodyWeightFragmentTemplate,
+                            Slots.QUESTION_INDEX, Integer.toString(j),
+                            Slots.COL, Integer.toString(i),
+                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(rubricWeights.get(i)) : "0",
+                            Slots.RUBRIC_PARAM_WEIGHT, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_WEIGHT);
+                tableBodyWeightFragmentHtml.append(tableBodyWeightCell).append(Const.EOL);
             }
 
             // Get entire row
@@ -427,7 +439,16 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                             Slots.SUB_QUESTION, SanitizationHelper.sanitizeForHtml(rubricSubQuestions.get(j)),
                             Slots.RUBRIC_ROW_BODY_FRAGMENTS, tableBodyFragmentHtml.toString(),
                             Slots.RUBRIC_PARAM_SUB_QUESTION, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_SUBQUESTION);
+
+            String tableBodyWeightsRow = Templates.populateTemplate(tableBodyWeightRowTemplate,
+                            Slots.QUESTION_INDEX, Integer.toString(j),
+                            Slots.ROW, Integer.toString(j),
+                            Slots.SUB_QUESTION, SanitizationHelper.sanitizeForHtml(rubricSubQuestions.get(j)),
+                            Slots.RUBRIC_ROW_BODY_WEIGHT_FRAGMENTS, tableBodyWeightFragmentHtml.toString(),
+                            Slots.RUBRIC_PARAM_SUB_QUESTION, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_SUBQUESTION);
+
             tableBodyHtml.append(tableRow).append(Const.EOL);
+            tableBodyHtml.append(tableBodyWeightsRow).append(Const.EOL);
         }
 
         // Create rubric column options as the last row of the table
