@@ -84,7 +84,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
         boolean hasAssignedWeights = "on".equals(hasAssignedWeightsString);
         int numOfRubricChoices = Integer.parseInt(numOfRubricChoicesString);
         int numOfRubricSubQuestions = Integer.parseInt(numOfRubricSubQuestionsString);
-        List<Double> rubricWeights = getRubricWeights(requestParameters, numOfRubricChoices, hasAssignedWeights);
+        List<Double> rubricWeights = getRubricWeights(requestParameters, numOfRubricChoices, numOfRubricSubQuestions, hasAssignedWeights);
         List<String> rubricChoices = getRubricChoices(requestParameters, numOfRubricChoices);
         List<String> rubricSubQuestions = getSubQuestions(requestParameters, numOfRubricSubQuestions);
         List<List<String>> rubricDescriptions = getRubricQuestionDescriptions(requestParameters,
@@ -102,30 +102,30 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
         return true;
     }
 
-    private List<Double> getRubricWeights(Map<String, String[]> requestParameters, int numOfRubricChoices,
-                                         boolean hasAssignedWeights) {
+    private List<Double> getRubricWeights(Map<String, String[]> requestParameters, int numOfRubricChoices, int numOfRubricSubQuestions, boolean hasAssignedWeights) {
         List<Double> rubricWeights = new ArrayList<>();
 
         if (!hasAssignedWeights) {
             return rubricWeights;
         }
 
-        for (int i = 0; i < numOfRubricChoices; i++) {
+        for (int j = 0; j < numOfRubricSubQuestions; j++) {
+            for (int i = 0; i < numOfRubricChoices; i++) {
+                String weight = HttpRequestHelper.getValueFromParamMap(
+                        requestParameters, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_WEIGHT + "-" + j + "-" + i);
+                String choice = HttpRequestHelper.getValueFromParamMap(
+                        requestParameters, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_CHOICE + "-" + j);
 
-            String weight = HttpRequestHelper.getValueFromParamMap(
-                    requestParameters, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_WEIGHT + "-" + i);
-            String choice = HttpRequestHelper.getValueFromParamMap(
-                    requestParameters, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_CHOICE + "-" + i);
+                if (choice == null) {
+                    continue;
+                }
 
-            if (choice == null) {
-                continue;
-            }
-
-            try {
-                rubricWeights.add(Double.parseDouble(weight));
-            } catch (NumberFormatException e) {
-                // Do not add weight to rubricWeights if the weight cannot be parsed
-                log.warning("Failed to parse weight for rubric question: " + weight);
+                try {
+                    rubricWeights.add(Double.parseDouble(weight));
+                } catch (NumberFormatException e) {
+                    // Do not add weight to rubricWeights if the weight cannot be parsed
+                    log.warning("Failed to parse weight for rubric question: " + weight);
+                }
             }
         }
 
@@ -395,7 +395,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                     Templates.populateTemplate(tableWeightFragmentTemplate,
                             Slots.QUESTION_INDEX, questionNumberString,
                             Slots.COL, Integer.toString(i),
-                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(rubricWeights.get(i)) : "0",
+                            Slots.RUBRIC_WEIGHT, "",
                             Slots.RUBRIC_PARAM_WEIGHT, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_WEIGHT);
             tableWeightFragmentHtml.append(tableWeightCell).append(Const.EOL);
         }
@@ -408,6 +408,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
         String tableBodyWeightRowTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY_WEIGHT_ROW;
         String tableBodyTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY;
 
+        int rubricWeightIterator = 0;
         for (int j = 0; j < numOfRubricSubQuestions; j++) {
             StringBuilder tableBodyFragmentHtml = new StringBuilder();
             StringBuilder tableBodyWeightFragmentHtml = new StringBuilder();
@@ -426,7 +427,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                         Templates.populateTemplate(tableBodyWeightFragmentTemplate,
                             Slots.QUESTION_INDEX, Integer.toString(j),
                             Slots.COL, Integer.toString(i),
-                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(rubricWeights.get(i)) : "0",
+                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(rubricWeights.get(rubricWeightIterator++)) : "0",
                             Slots.RUBRIC_PARAM_WEIGHT, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_WEIGHT);
                 tableBodyWeightFragmentHtml.append(tableBodyWeightCell).append(Const.EOL);
             }
@@ -1005,7 +1006,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
             }
         }
 
-        if (hasAssignedWeights && rubricChoices.size() != rubricWeights.size()) {
+        if (hasAssignedWeights && rubricChoices.size() * numOfRubricSubQuestions != rubricWeights.size()) {
             errors.add(Const.FeedbackQuestion.RUBRIC_ERROR_INVALID_WEIGHT);
         }
 
