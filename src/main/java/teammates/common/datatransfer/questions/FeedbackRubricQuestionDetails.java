@@ -426,7 +426,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                         Templates.populateTemplate(tableBodyWeightFragmentTemplate,
                             Slots.QUESTION_INDEX, Integer.toString(j),
                             Slots.COL, Integer.toString(i),
-                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(getRubricWeight(j, i)) : "0",
+                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(getRubricWeight(i, j)) : "0",
                             Slots.RUBRIC_PARAM_WEIGHT, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_WEIGHT);
                 tableBodyWeightFragmentHtml.append(tableBodyWeightCell).append(Const.EOL);
             }
