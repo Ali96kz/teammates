@@ -578,12 +578,10 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
 
     public String getRecipientStatsHeaderHtml() {
         StringBuilder headerBuilder = new StringBuilder(100);
-        DecimalFormat dfWeight = new DecimalFormat("#.##");
         StringBuilder choicesHtmlBuilder = new StringBuilder(100);
 
-        for (int i = 0; i < rubricChoices.size(); i++) {
-            String weight = dfWeight.format(rubricWeights.get(i));
-            String html = getRecipientStatsHeaderFragmentHtml(rubricChoices.get(i) + " (Weight: " + weight + ")");
+        for (String rubricChoice : rubricChoices) {
+            String html = getRecipientStatsHeaderFragmentHtml(rubricChoice);
             choicesHtmlBuilder.append(html);
         }
 
@@ -1122,7 +1120,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
 
             // <td> entries which display number of responses per subQuestion per rubric choice
             for (int i = 0; i < getNumOfRubricChoices(); i++) {
-                cols.add(Integer.toString(numOfResponsesPerSubQuestionPerChoice[subQuestion][i]));
+                cols.add(Integer.toString(numOfResponsesPerSubQuestionPerChoice[subQuestion][i])+" ["+ getRubricWeight(i, subQuestion) +"]");
             }
 
             // <td> entries which display aggregate statistics
