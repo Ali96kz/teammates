@@ -408,7 +408,6 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
         String tableBodyWeightRowTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY_WEIGHT_ROW;
         String tableBodyTemplate = FormTemplates.RUBRIC_EDIT_FORM_BODY;
 
-        int rubricWeightIterator = 0;
         for (int j = 0; j < numOfRubricSubQuestions; j++) {
             StringBuilder tableBodyFragmentHtml = new StringBuilder();
             StringBuilder tableBodyWeightFragmentHtml = new StringBuilder();
@@ -427,7 +426,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                         Templates.populateTemplate(tableBodyWeightFragmentTemplate,
                             Slots.QUESTION_INDEX, Integer.toString(j),
                             Slots.COL, Integer.toString(i),
-                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(rubricWeights.get(rubricWeightIterator++)) : "0",
+                            Slots.RUBRIC_WEIGHT, hasAssignedWeights ? weightFormat.format(getRubricWeight(j, i)) : "0",
                             Slots.RUBRIC_PARAM_WEIGHT, Const.ParamsNames.FEEDBACK_QUESTION_RUBRIC_WEIGHT);
                 tableBodyWeightFragmentHtml.append(tableBodyWeightCell).append(Const.EOL);
             }
@@ -618,13 +617,9 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
         // Create table row header fragments
         StringBuilder tableHeaderFragmentHtml = new StringBuilder();
         String tableHeaderFragmentTemplate = FormTemplates.RUBRIC_RESULT_STATS_HEADER_FRAGMENT;
-        for (int i = 0; i < numOfRubricChoices; i++) {
 
-            String header = SanitizationHelper.sanitizeForHtml(rubricChoices.get(i))
-                          + (fqd.hasAssignedWeights
-                            ? "<span style=\"font-weight:normal;\"> (Weight: "
-                              + weightFormat.format(rubricWeights.get(i)) + ")</span>"
-                            : "");
+        for (int i = 0; i < numOfRubricChoices; i++) {
+            String header = SanitizationHelper.sanitizeForHtml(rubricChoices.get(i));
 
             String tableHeaderCell =
                     Templates.populateTemplate(tableHeaderFragmentTemplate, Slots.RUBRIC_CHOICE_VALUE, header);
@@ -654,9 +649,10 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                 String percentageFrequencyString = isSubQuestionRespondedTo
                                                  ? df.format(rubricStats[i][j] * 100) + "%"
                                                  : STATISTICS_NO_VALUE_STRING;
+                String tableWeightCell = "[" + weightFormat.format(getRubricWeight(j, i)) + "]";
                 String tableBodyCell = Templates.populateTemplate(tableBodyFragmentTemplate,
                         Slots.RUBRIC_PERCENTAGE_FREQUENCY_OR_AVERAGE,
-                        percentageFrequencyString + " (" + responseFrequency[i][j] + ")");
+                        percentageFrequencyString + " (" + responseFrequency[i][j] + ") " + tableWeightCell);
                 tableBodyFragmentHtml.append(tableBodyCell).append(Const.EOL);
             }
 
@@ -1062,6 +1058,11 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
         return rubricSubQuestions;
     }
 
+    private Double getRubricWeight(int rubricChoiceNumber, int rubricSubQuestionNumber){
+        int index = numOfRubricChoices * rubricSubQuestionNumber + rubricChoiceNumber;
+        return rubricWeights.get(index);
+    }
+
     /**
      * Class to store any stats related to a recipient.
      */
@@ -1288,7 +1289,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
                 if (questionDetails.hasAssignedWeights()) {
                     for (int j = 0; j < numOfRubricChoices; j++) {
                         float choiceWeight =
-                                (float) (questionDetails.getRubricWeights().get(j) * percentageFrequencyAndAverage[i][j]);
+                                (float) (questionDetails.getRubricWeight(j, i) * percentageFrequencyAndAverage[i][j]);
                         percentageFrequencyAndAverage[i][numOfRubricChoices] += choiceWeight;
                     }
                 }
