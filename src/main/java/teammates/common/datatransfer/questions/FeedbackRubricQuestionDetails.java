@@ -795,7 +795,7 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
 
             if (hasAssignedWeights) {
                 String averageString = isSubQuestionRespondedTo
-                                     ? dfAverage.format(rubricStats[i][rubricWeights.size()])
+                                     ? dfAverage.format(rubricStats[i][numOfRubricChoices])
                                      : STATISTICS_NO_VALUE_STRING;
                 csv.append(',').append(averageString);
             }
@@ -862,21 +862,12 @@ public class FeedbackRubricQuestionDetails extends FeedbackQuestionDetails {
 
     public String getRecipientStatsCsvHeader() {
         StringBuilder header = new StringBuilder(100);
-        DecimalFormat dfWeight = new DecimalFormat("#.##");
         String headerFragment = "Team,Recipient Name,Recipient's Email,Sub Question,";
 
         header.append(headerFragment);
 
         for (int i = 0; i < numOfRubricChoices; i++) {
-            StringBuilder rubricChoiceBuilder = new StringBuilder();
-
-            rubricChoiceBuilder.append(rubricChoices.get(i));
-
-            if (hasAssignedWeights) {
-                rubricChoiceBuilder.append(" (Weight: ").append(dfWeight.format(rubricWeights.get(i))).append(')');
-            }
-
-            header.append(SanitizationHelper.sanitizeForCsv(rubricChoiceBuilder.toString())).append(',');
+            header.append(SanitizationHelper.sanitizeForCsv(rubricChoices.get(i))).append(',');
         }
 
         header.append("Total,Average").append(Const.EOL);
