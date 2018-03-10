@@ -154,12 +154,15 @@ function addRubricRow(questionNum) {
             </td>`;
         rubricRowBodyFragments += rubricRowFragment;
 
-        const rubricCellWeightFragment = 'td';
+        const rubricCellWeightFragment =
+            `<td> 
+                <input type="number" class="form-control nonDestructive" value="0" step="0.01">
+            </td>`;
         rubricRowBodyWeightFragments += rubricCellWeightFragment;
     }
 
     // Create new rubric row
-    const newRubricRow =
+    const newRubricQuestionRow =
         `<tr id="rubricRow-${questionNum}-${newRowNumber - 1}">
             <td>
                 <div class="col-sm-12 input-group">
@@ -177,10 +180,17 @@ function addRubricRow(questionNum) {
             ${rubricRowBodyFragments}
         </tr>`;
 
+    const newRubricWeightRow =
+        `<tr id = "rubricWeights-${newRowNumber-1}"> 
+            <td></td>
+            ${rubricRowBodyWeightFragments}
+        </tr>`;
+
+    const newRubricQuestion = newRubricQuestionRow + newRubricWeightRow;
+
     // Row to insert new row after
     const $secondLastRow = $(`#rubricEditTable-${questionNum} tbody tr:nth-last-child(2)`);
-    $(newRubricRow).insertAfter($secondLastRow);
-
+    $(newRubricQuestion).insertAfter($secondLastRow);
     // Increment
     $(`#rubricNumRows-${questionNum}`).val(newRowNumber);
 
