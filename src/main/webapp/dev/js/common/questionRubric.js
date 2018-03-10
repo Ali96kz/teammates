@@ -140,6 +140,8 @@ function addRubricRow(questionNum) {
     const newRowNumber = numberOfRows + 1;
 
     let rubricRowBodyFragments = '';
+    let rubricRowBodyWeightFragments = '';
+
     // Create numberOfCols of <td>'s
     for (let cols = 0; cols < numberOfCols; cols += 1) {
         if (!$(`.rubricCol-${questionNum}-${cols}`).length) {
@@ -151,6 +153,9 @@ function addRubricRow(questionNum) {
                         name="rubricDesc-${newRowNumber - 1}-${cols}"></textarea>
             </td>`;
         rubricRowBodyFragments += rubricRowFragment;
+
+        const rubricCellWeightFragment = 'td';
+        rubricRowBodyWeightFragments += rubricCellWeightFragment;
     }
 
     // Create new rubric row
@@ -233,6 +238,14 @@ function addRubricCol(questionNum) {
         // Insert after previous <td>
         const lastTd = $(`#rubricRow-${questionNum}-${rows} td:last`);
         $(rubricRowFragment).insertAfter(lastTd);
+
+        const rubricWeightFragment =
+            '<td> ' +
+                '<input type="number" class="form-control nonDestructive" value="0" name="rubricWeight-${questionNum}-${newColNumber}" step="0.01"> ' +
+            '</td>';
+        const lastWeightCell =$(`#rubricWeights-${rows} td:last`);
+
+        $(rubricWeightFragment).insertAfter(lastWeightCell);
     }
 
     // Add options row at the end
