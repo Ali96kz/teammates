@@ -311,17 +311,21 @@ function removeRubricRow(index, questionNum) {
     const questionId = `#form_editquestion-${questionNum}`;
 
     const $thisRow = $(`#rubricRow-${questionNum}-${index}`);
-
+    const $weightRow = $(`#rubricWeights-${index}`);
+    alert
     // count number of table rows from table body
     const numberOfRows = $thisRow.parent().children('tr').length - 1; // exclude options row
+
 
     const delStr = numberOfRows <= 1 ? 'clear' : 'delete';
     const messageText = `Are you sure you want to ${delStr} the row?`;
     const okCallback = function () {
         if (numberOfRows <= 1) {
             $thisRow.find('textarea').val('');
+            $weightRow.find('input').val('');
         } else {
             $thisRow.remove();
+            $weightRow.remove();
 
             if ($(questionId).attr('editStatus') === 'hasResponses') {
                 $(questionId).attr('editStatus', 'mustDeleteResponses');
