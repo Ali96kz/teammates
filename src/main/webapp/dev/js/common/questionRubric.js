@@ -307,12 +307,19 @@ function addRubricCol(questionNum) {
     disableCornerMoveRubricColumnButtons(questionNum);
 }
 
+function changeColumnWeight(questionNum, col) {
+    let columnValue = $(`#rubricWeight-${questionNum}-${col}`).val();
+    for (let i = 0; i < questionNum; i++) {
+        $(`#rubricWeight-${i}-${col}`).val(columnValue);
+    }
+}
+
 function removeRubricRow(index, questionNum) {
     const questionId = `#form_editquestion-${questionNum}`;
 
     const $thisRow = $(`#rubricRow-${questionNum}-${index}`);
     const $weightRow = $(`#rubricWeights-${index}`);
-    alert
+
     // count number of table rows from table body
     const numberOfRows = $thisRow.parent().children('tr').length - 1; // exclude options row
 
@@ -465,5 +472,6 @@ export {
     highlightRubricRow,
     moveAssignWeightsCheckbox,
     removeRubricCol,
+    changeColumnWeight,
     removeRubricRow,
 };

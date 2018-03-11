@@ -97,6 +97,7 @@ import {
     moveAssignWeightsCheckbox,
     removeRubricCol,
     removeRubricRow,
+    changeColumnWeight
 } from '../common/questionRubric';
 
 import {
@@ -1218,6 +1219,7 @@ window.addRankOption = addRankOption;
 window.removeRankOption = removeRankOption;
 window.addRubricRow = addRubricRow;
 window.removeRubricRow = removeRubricRow;
+window.changeColumnWeight = changeColumnWeight;
 window.highlightRubricRow = highlightRubricRow;
 window.addRubricCol = addRubricCol;
 window.removeRubricCol = removeRubricCol;
