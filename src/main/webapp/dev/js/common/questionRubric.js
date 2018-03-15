@@ -358,6 +358,9 @@ function removeRubricCol(index, questionNum) {
             $thisCol.find('input[id^="rubricWeight"]').val(0);
         } else {
             $thisCol.remove();
+            for (let i = 0; i < questionNum; i++) {
+                $(`.rubricCol-${i}-${index}`).remove();
+            }
             disableCornerMoveRubricColumnButtons(questionNum);
 
             if ($(questionId).attr('editStatus') === 'hasResponses') {
