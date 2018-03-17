@@ -250,9 +250,9 @@ function addRubricCol(questionNum) {
         $(rubricRowFragment).insertAfter(lastTd);
 
         const rubricWeightFragment =
-            '<td> ' +
-                '<input type="number" class="form-control nonDestructive" value="0" name="rubricWeight-${questionNum}-${newColNumber}" step="0.01"> ' +
-            '</td>';
+            `<td class="rubricCol-${rows}-${newColNumber}">  
+                <input type="number" class="form-control nonDestructive" value="0" name="rubricWeight-${questionNum}-${newColNumber}" step="0.01">
+            </td>`;
         const lastWeightCell =$(`#rubricWeights-${rows} td:last`);
 
         $(rubricWeightFragment).insertAfter(lastWeightCell);
