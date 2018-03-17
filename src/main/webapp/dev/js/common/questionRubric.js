@@ -1,4 +1,5 @@
 import {
+    showModalAlert,
     showModalConfirmation,
 } from './bootboxWrapper';
 
@@ -307,17 +308,19 @@ function addRubricCol(questionNum) {
     disableCornerMoveRubricColumnButtons(questionNum);
 }
 
-function changeColumnWeight(questionNum, col) {
-    let columnValue = $(`#rubricWeight-${questionNum}-${col}`).val();
-    for (let i = 0; i < questionNum; i++) {
-        $(`#rubricWeight-${i}-${col}`).val(columnValue);
-    }
+function bindColumnWeightWithCellWeight() {
+    $('#rubricWeight-1-2').on('keyup', function () {
+        let columnValue = $(`#rubricWeight-1-2`).val();
+        for (let i = 0; i < 2; i++) {
+            $(`#rubricWeight-${i}-2`).val(columnValue);
+        }
+    });
 }
 
 function removeRubricRow(index, questionNum) {
     const questionId = `#form_editquestion-${questionNum}`;
 
-    const $thisRow = $(`#rubricRow-${questionNum}-${index}`);
+    const $thisRow = $(`#rubricRow-${questionNum}-${index}`);``
     const $weightRow = $(`#rubricWeights-${index}`);
 
     // count number of table rows from table body
@@ -475,6 +478,6 @@ export {
     highlightRubricRow,
     moveAssignWeightsCheckbox,
     removeRubricCol,
-    changeColumnWeight,
+    bindColumnWeightWithCellWeight,
     removeRubricRow,
 };

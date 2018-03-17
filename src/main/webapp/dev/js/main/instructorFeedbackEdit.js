@@ -97,7 +97,7 @@ import {
     moveAssignWeightsCheckbox,
     removeRubricCol,
     removeRubricRow,
-    changeColumnWeight
+    bindColumnWeightWithCellWeight
 } from '../common/questionRubric';
 
 import {
@@ -1140,6 +1140,7 @@ function readyFeedbackEditPage() {
     setupFsCopyModal();
 
     bindAssignWeightsCheckboxes();
+    bindColumnWeightWithCellWeight();
     bindMsqEvents();
     bindMoveRubricColButtons();
     bindRankEvents();
@@ -1219,7 +1220,7 @@ window.addRankOption = addRankOption;
 window.removeRankOption = removeRankOption;
 window.addRubricRow = addRubricRow;
 window.removeRubricRow = removeRubricRow;
-window.changeColumnWeight = changeColumnWeight;
+window.changeColumnWeight = bindColumnWeightWithCellWeight;
 window.highlightRubricRow = highlightRubricRow;
 window.addRubricCol = addRubricCol;
 window.removeRubricCol = removeRubricCol;
