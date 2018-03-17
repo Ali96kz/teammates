@@ -337,7 +337,7 @@ function disableQuestion(questionNum) {
     moveAssignWeightsCheckbox($currentQuestionTable.find('input[id^="rubricAssignWeights"]'));
 
     if (!hasAssignedWeights(questionNum)) {
-        $currentQuestionTable.find(`#rubricWeights-${questionNum}`).hide();
+        $currentQuestionTable.find("tr[id*=rubricWeights]").hide();
     }
 
     $(`#${ParamsNames.FEEDBACK_QUESTION_EDITTEXT}-${questionNum}`).show();
