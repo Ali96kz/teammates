@@ -1,5 +1,4 @@
 import {
-    showModalAlert,
     showModalConfirmation,
 } from './bootboxWrapper';
 
@@ -320,7 +319,7 @@ function bindColumnWeightWithCellWeight() {
 function removeRubricRow(index, questionNum) {
     const questionId = `#form_editquestion-${questionNum}`;
 
-    const $thisRow = $(`#rubricRow-${questionNum}-${index}`);``
+    const $thisRow = $(`#rubricRow-${questionNum}-${index}`);
     const $weightRow = $(`#rubricWeights-${index}`);
 
     // count number of table rows from table body
