@@ -155,8 +155,8 @@ function addRubricRow(questionNum) {
         rubricRowBodyFragments += rubricRowFragment;
 
         const rubricCellWeightFragment =
-            `<td> 
-                <input type="number" class="form-control nonDestructive" value="0" step="0.01">
+            `<td class="rubricCol-${questionNum}-${cols}"> 
+                <input type="number" class="form-control nonDestructive" id = "rubricWeight-${questionNum}-${cols}" value="0" step="0.01">
             </td>`;
         rubricRowBodyWeightFragments += rubricCellWeightFragment;
     }
