@@ -1140,7 +1140,6 @@ function readyFeedbackEditPage() {
     setupFsCopyModal();
 
     bindAssignWeightsCheckboxes();
-    bindColumnWeightWithCellWeight();
     bindMsqEvents();
     bindMoveRubricColButtons();
     bindRankEvents();
