@@ -308,8 +308,8 @@ function addRubricCol(questionNum) {
 }
 
 function bindColumnWeightWithCellWeight(questionNum, questionCol) {
-    $(`#rubricWeight-${questionNum}-${questionCol}`).on('keyup', function () {
-        let columnValue = $(`#rubricWeight-1-2`).val();
+    $(`#rubricWeight-${questionNum}-${questionCol}`).on("change paste keyup", function () {
+        let columnValue = $(`#rubricWeight-${questionNum}-${questionCol}`).val();
         for (let i = 0; i < questionNum; i++) {
             $(`#rubricWeight-${i}-${questionCol}`).val(columnValue);
         }
