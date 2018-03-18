@@ -307,11 +307,11 @@ function addRubricCol(questionNum) {
     disableCornerMoveRubricColumnButtons(questionNum);
 }
 
-function bindColumnWeightWithCellWeight() {
-    $('#rubricWeight-1-2').on('keyup', function () {
+function bindColumnWeightWithCellWeight(questionNum, questionCol) {
+    $(`#rubricWeight-${questionNum}-${questionCol}`).on('keyup', function () {
         let columnValue = $(`#rubricWeight-1-2`).val();
-        for (let i = 0; i < 2; i++) {
-            $(`#rubricWeight-${i}-2`).val(columnValue);
+        for (let i = 0; i < questionNum; i++) {
+            $(`#rubricWeight-${i}-${questionCol}`).val(columnValue);
         }
     });
 }
