@@ -26,6 +26,7 @@ function swapRubricCol(questionNum, firstColIndex, secondColIndex) {
     const numberOfRows = parseInt($(`#rubricNumRows-${questionNum}`).val(), 10);
     const CHOICE = 'RUBRIC_CHOICE';
     const WEIGHT = 'RUBRIC_WEIGHT';
+    const CELL_WEIGHT = 'RUBRIC_CELL_WEIGHT';
     const DESC = 'RUBRIC_DESC';
     const elemSelector = (type, col, row = 0) => {
         if (type === CHOICE) {
@@ -34,6 +35,8 @@ function swapRubricCol(questionNum, firstColIndex, secondColIndex) {
             return getRubricWeightElem(questionNum, col);
         } else if (type === DESC) {
             return getRubricDescElem(questionNum, row, col);
+        } else if(type === CELL_WEIGHT){
+            return getRubricWeightElem(row, col);
         }
 
         return null;
@@ -52,6 +55,10 @@ function swapRubricCol(questionNum, firstColIndex, secondColIndex) {
 
     // swap rubric weights
     swapValues(WEIGHT);
+
+    for (let row = 0; row < numberOfRows; row += 1) {
+        swapValues(CELL_WEIGHT, row)
+    }
 
     // swap options filled
     for (let row = 0; row < numberOfRows; row += 1) {
