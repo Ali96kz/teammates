@@ -524,9 +524,9 @@ function enableNewQuestion() {
     // If instructor had assigned rubric weights before,
     // then display the weights row, otherwise hide it.
     if (hasAssignedWeights(NEW_QUESTION)) {
-        $newQuestionTable.find(`#rubricWeights-${NEW_QUESTION}`).show();
+        $newQuestionTable.find(`tr[id*=rubricWeights]`).show();
     } else {
-        $newQuestionTable.find(`#rubricWeights-${NEW_QUESTION}`).hide();
+        $newQuestionTable.find(`tr[id*=rubricWeights]`).hide();
     }
 
     $newQuestionTable.find(`.rubricRemoveChoiceLink-${NEW_QUESTION}`).show();
